@@ -89,7 +89,6 @@ def gene_ids(cormat):
         species = "human"
     else:
         species = "mouse"
-    print("--------- Identifiers ----------")
     print("Predicted species:", species)
     gene_id_map = geneids.get_ensembl_mappings(species)
     identifiers = set.union(set(cormat.index), set(cormat.columns))
@@ -98,7 +97,6 @@ def gene_ids(cormat):
     print("Total unique identifiers:", len(identifiers))
     print("Gene Symbol overlap:", set(symbol_overlap)/len(identifiers))
     print("Ensembl ID overlap:", set(entrezid_overlap)/len(identifiers))
-    print("--------------------------------")
 
 def get_data_path() -> str:
     path = os.path.join(
@@ -120,12 +118,21 @@ def compare_known_cor(cormat):
 
 def benchmark(file: str):
     # run benchmark
+    print("------- Load file -------")
     cormat = load_correlation_file(file)
     # 0. Basic stats (file name / file size)
+    print("------- Matrix format -------")
     bench_stats(cormat)
+
+    print("------- Gene Identifiers -------")
+    gene_ids(cormat)
     # 1. identifiers
     # 2. symmetry
     # 3. Known correlations
+    print("------- Known correlation -------")
     compare_known_cor(cormat)
+    
     # 4. Funtion Prediction
-    return 0
+    print("------- Function prediction -------")
+
+
