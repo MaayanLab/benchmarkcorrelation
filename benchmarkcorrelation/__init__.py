@@ -27,7 +27,7 @@ def load_correlation_file(file: str):
     delimiter = ","
     try:
         if file.endswith(".f"):
-            print("feather")
+            print("Matrix format: feather")
             mat = pd.read_feather(file)
             if "index" in mat.columns:
                 mat = mat.set_index("index")
@@ -35,7 +35,7 @@ def load_correlation_file(file: str):
                 mat.index = mat.columns
             mat = mat.astype("float16")
         elif file.endswith((".csv", ".tsv", ".txt")):
-            print("text")
+            print("Matrix format: text")
             with open(file, 'r') as csvfile:
                 dialect = csv.Sniffer().sniff(csvfile.readline())
                 delimiter = dialect.delimiter
@@ -91,7 +91,7 @@ def gene_ids(cormat):
         species = "mouse"
     print("--------- Identifiers ----------")
     print("Predicted species:", species)
-    #gene_id_map = get_ensembl_mappings(species)
+    gene_id_map = geneids.get_ensembl_mappings(species)
     identifiers = set.union(set(cormat.index), set(cormat.columns))
     symbol_overlap = identifiers.intersect(set(gene_id_map.iloc[:,0]))
     entrezid_overlap = identifiers.intersect(set(gene_id_map.iloc[:,1]))
@@ -118,9 +118,6 @@ def compare_known_cor(cormat):
     cor_match = np.corrcoef(flat_new, flat_old)[1,1]
     print("Correlation similarity to known:", cor_match)
 
-cormat = load_correlation_file("human_correlation_archs4.f")
-gene_ids(cormat)
-
 def benchmark(file: str):
     # run benchmark
     cormat = load_correlation_file(file)
@@ -129,5 +126,6 @@ def benchmark(file: str):
     # 1. identifiers
     # 2. symmetry
     # 3. Known correlations
+    compare_known_cor(cormat)
     # 4. Funtion Prediction
     return 0
