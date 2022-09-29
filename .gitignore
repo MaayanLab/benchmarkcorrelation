@@ -1,0 +1,6 @@
+*.gtf
+*.fastq
+*.fastq.gz
+notebooks*
+*.ipynb
+*DS_Store
