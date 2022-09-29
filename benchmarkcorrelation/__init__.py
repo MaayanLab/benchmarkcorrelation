@@ -64,16 +64,28 @@ def bench_stats(cormat):
     else:
         symmetric = False
         same_id_order = False
-    print("File size: ", int(file_size), "MB")
-    print("Shape", file_dimensions)
-    print("Square: ", square)
-    print("ID order identical for columns and rows:", same_id_order)
+
+    print('{}{}{}'.format("File size:".ljust(28), int(file_size), "MB"))
+
+    print('{}{}'.format("Shape:".ljust(28), file_dimensions))
+
+    print('{}{}'.format("Square:".ljust(28), square))
+
+    print('{}{}'.format("ID order identical:".ljust(28), same_id_order))
+
     print("Matrix symmetric:", symmetric)
+    print('{}{}'.format("Matrix symmetric:".ljust(28), symmetric))
+
     print("Contains NA: ", cormat.isnull().values.any())
+    print('{}{}'.format("Contains NA:".ljust(28), cormat.isnull().values.any()))
+
     temp = np.array(cormat, dtype = np.float32)
     np.fill_diagonal(temp, None)
     print("Cor mean: ", np.nanmean(temp))
+    print('{}{}'.format("Correlation mean:".ljust(28), np.nanmean(temp)))
+
     print("Cor sd: ", np.nanstd(temp))
+    print('{}{}'.format("Correlation STD:".ljust(28), np.nanstd(temp)))
 
 def gene_ids(cormat):
     upper = 0
@@ -89,14 +101,14 @@ def gene_ids(cormat):
         species = "human"
     else:
         species = "mouse"
-    print("Predicted species:", species)
+    print('{}{}'.format("Predicted species:".ljust(28), species))
     gene_id_map = geneids.get_ensembl_mappings(species)
     identifiers = set.union(set(cormat.index), set(cormat.columns))
     symbol_overlap = identifiers.intersection(set(gene_id_map.iloc[:,0]))
     entrezid_overlap = identifiers.intersection(set(gene_id_map.iloc[:,1]))
-    print("Total unique identifiers:", len(identifiers))
-    print("Gene Symbol overlap:", set(symbol_overlap)/len(identifiers))
-    print("Ensembl ID overlap:", set(entrezid_overlap)/len(identifiers))
+    print('{}{}'.format("Total unique identifiers:".ljust(28), len(identifiers)))
+    print('{}{}'.format("Gene Symbol overlap:".ljust(28), len(set(symbol_overlap))/len(identifiers)))
+    print('{}{}'.format("Ensembl ID overlap:".ljust(28), len(set(entrezid_overlap))/len(identifiers)))
 
 def get_data_path() -> str:
     path = os.path.join(
@@ -114,7 +126,7 @@ def compare_known_cor(cormat):
     flat_new = cormat.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
     flat_old = old_cor.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
     cor_match = np.corrcoef(flat_new, flat_old)[1,1]
-    print("Correlation similarity to known:", cor_match)
+    print('{}{}'.format("Correlation similarity to known:".ljust(28), cor_match))
 
 def benchmark(file: str, identifiers=True, correlation=True, prediction=True, format=True):
     # run benchmark
