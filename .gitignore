@@ -4,3 +4,5 @@
 notebooks*
 *.ipynb
 *DS_Store
+human_correlation_archs4.f
+test/*

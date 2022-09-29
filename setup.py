@@ -19,18 +19,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     package_data={
-        "xalign": ["data/*"]
+        "benchmarkcorrelation": ["data/*"]
     },
     include_package_data=True,
-    install_requires=[
-        'pandas',
-        'numpy',
-        'scikit-learn',
-        'progress',
-        'loess',
-        'tqdm',
-        'statsmodels',
-        'mygene'
-    ],
+    install_requires=list(map(str.strip, open('requirements.txt', 'r').readlines())),
     python_requires='>=3.6',
 )
