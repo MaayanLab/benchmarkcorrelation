@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="benchmarkcorrelation",
-    version="0.0.5",
+    version="0.0.6",
     author="Alexander Lachmann",
     author_email="alexander.lachmann@mssm.edu",
     description="Benchmark correlation matrix for gene function prediction and general correctness.",

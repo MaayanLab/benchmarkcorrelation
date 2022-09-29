@@ -92,8 +92,8 @@ def gene_ids(cormat):
     print("Predicted species:", species)
     gene_id_map = geneids.get_ensembl_mappings(species)
     identifiers = set.union(set(cormat.index), set(cormat.columns))
-    symbol_overlap = identifiers.intersect(set(gene_id_map.iloc[:,0]))
-    entrezid_overlap = identifiers.intersect(set(gene_id_map.iloc[:,1]))
+    symbol_overlap = identifiers.intersection(set(gene_id_map.iloc[:,0]))
+    entrezid_overlap = identifiers.intersection(set(gene_id_map.iloc[:,1]))
     print("Total unique identifiers:", len(identifiers))
     print("Gene Symbol overlap:", set(symbol_overlap)/len(identifiers))
     print("Ensembl ID overlap:", set(entrezid_overlap)/len(identifiers))
@@ -116,23 +116,25 @@ def compare_known_cor(cormat):
     cor_match = np.corrcoef(flat_new, flat_old)[1,1]
     print("Correlation similarity to known:", cor_match)
 
-def benchmark(file: str):
+def benchmark(file: str, identifiers=True, correlation=True, prediction=True, format=True):
     # run benchmark
     print("------- Load file -------")
     cormat = load_correlation_file(file)
     # 0. Basic stats (file name / file size)
-    print("------- Matrix format -------")
-    bench_stats(cormat)
 
-    print("------- Gene Identifiers -------")
-    gene_ids(cormat)
-    # 1. identifiers
-    # 2. symmetry
-    # 3. Known correlations
-    print("------- Known correlation -------")
-    compare_known_cor(cormat)
+    if format:
+        print("------- Matrix format -------")
+        bench_stats(cormat)
+
+    if identifiers:
+        print("------- Gene Identifiers -------")
+        gene_ids(cormat)
+
+    if correlation:
+        print("------- Known correlation -------")
+        compare_known_cor(cormat)
     
-    # 4. Funtion Prediction
-    print("------- Function prediction -------")
+    if prediction:
+        print("------- Function prediction -------")
 
 
