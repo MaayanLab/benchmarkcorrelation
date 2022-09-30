@@ -123,7 +123,7 @@ def compare_known_cor(cormat):
     cor_match = np.corrcoef(flat_new, flat_old)[1,1]
     print('{}{}'.format("Correlation similarity:".ljust(26), cor_match))
 
-def benchmark(file: str, identifiers=True, correlation=True, prediction=True, format=True):
+def benchmark(file: str, identifiers=True, correlation=True, pred=True, format=True):
     # run benchmark
     print("------- Load file -------")
     cormat = load_correlation_file(file)
@@ -141,7 +141,7 @@ def benchmark(file: str, identifiers=True, correlation=True, prediction=True, fo
         print("------- Known correlation -------")
         compare_known_cor(cormat)
     
-    if prediction:
+    if pred:
         print("------- Gene function prediction -------")
         prediction.prediction(cormat)
 
