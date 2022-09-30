@@ -30,10 +30,9 @@ def load_correlation_file(file: str):
             print('{}{}'.format("Matrix format:".ljust(26), "feather"))
             mat = pd.read_feather(file)
             if "index" in mat.columns:
-                mat = mat.set_index("index")
+                mat.set_index("index", inplace=True)
             else:
                 mat.index = mat.columns
-            mat = mat.astype("float16")
         elif file.endswith((".csv", ".tsv", ".txt")):
             print('{}{}'.format("Matrix format:".ljust(26), "text"))
             with open(file, 'r') as csvfile:
@@ -77,16 +76,16 @@ def bench_stats(cormat):
 
     print('{}{}'.format("Contains NA:".ljust(26), cormat.isnull().values.any()))
 
-    temp = np.array(cormat, dtype = np.float32)
-    np.fill_diagonal(temp, None)
-    print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(temp)))
-    print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(temp)))
+    #temp = np.array(cormat, dtype = np.float32)
+    #np.fill_diagonal(temp, None)
+    print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
+    print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
+    np.nanmean(cormat.iloc[0:10000, 0:10000].astype("float32"))
 
 def gene_ids(cormat):
     upper = 0
     lower = 0
     species = ""
-    homogeneous = True
     for i in cormat.index:
         if i.isupper():
             upper = upper + 1
@@ -114,7 +113,6 @@ def get_data_path() -> str:
 
 def compare_known_cor(cormat):
     old_cor = pd.read_feather(get_data_path()+"known_cor.f")
-    #old_cor = pd.read_feather("data/known_cor.f")
     old_cor.index = old_cor.columns
     inter_row = cormat.index.intersection(old_cor.index)
     inter_column = cormat.index.intersection(old_cor.columns)
