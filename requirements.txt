@@ -3,5 +3,6 @@ feather-format==0.4.1
 matplotlib==3.6.0
 numpy==1.23.3
 pandas==1.5.0
+scikit_learn==1.1.2
 setuptools==58.0.4
 tqdm==4.64.1
