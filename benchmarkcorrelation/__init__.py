@@ -27,7 +27,7 @@ def load_correlation_file(file: str):
     delimiter = ","
     try:
         if file.endswith(".f"):
-            print("Matrix format: feather")
+            print('{}{}'.format("Matrix format:".ljust(26), "feather"))
             mat = pd.read_feather(file)
             if "index" in mat.columns:
                 mat = mat.set_index("index")
@@ -35,7 +35,7 @@ def load_correlation_file(file: str):
                 mat.index = mat.columns
             mat = mat.astype("float16")
         elif file.endswith((".csv", ".tsv", ".txt")):
-            print("Matrix format: text")
+            print('{}{}'.format("Matrix format:".ljust(26), "text"))
             with open(file, 'r') as csvfile:
                 dialect = csv.Sniffer().sniff(csvfile.readline())
                 delimiter = dialect.delimiter
@@ -65,27 +65,22 @@ def bench_stats(cormat):
         symmetric = False
         same_id_order = False
 
-    print('{}{}{}'.format("File size:".ljust(28), int(file_size), "MB"))
+    print('{}{}{}'.format("File size:".ljust(26), int(file_size), "MB"))
 
-    print('{}{}'.format("Shape:".ljust(28), file_dimensions))
+    print('{}{}'.format("Shape:".ljust(26), file_dimensions))
 
-    print('{}{}'.format("Square:".ljust(28), square))
+    print('{}{}'.format("Square:".ljust(26), square))
 
-    print('{}{}'.format("ID order identical:".ljust(28), same_id_order))
+    print('{}{}'.format("ID order identical:".ljust(26), same_id_order))
 
-    print("Matrix symmetric:", symmetric)
-    print('{}{}'.format("Matrix symmetric:".ljust(28), symmetric))
+    print('{}{}'.format("Matrix symmetric:".ljust(26), symmetric))
 
-    print("Contains NA: ", cormat.isnull().values.any())
-    print('{}{}'.format("Contains NA:".ljust(28), cormat.isnull().values.any()))
+    print('{}{}'.format("Contains NA:".ljust(26), cormat.isnull().values.any()))
 
     temp = np.array(cormat, dtype = np.float32)
     np.fill_diagonal(temp, None)
-    print("Cor mean: ", np.nanmean(temp))
-    print('{}{}'.format("Correlation mean:".ljust(28), np.nanmean(temp)))
-
-    print("Cor sd: ", np.nanstd(temp))
-    print('{}{}'.format("Correlation STD:".ljust(28), np.nanstd(temp)))
+    print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(temp)))
+    print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(temp)))
 
 def gene_ids(cormat):
     upper = 0
@@ -101,14 +96,14 @@ def gene_ids(cormat):
         species = "human"
     else:
         species = "mouse"
-    print('{}{}'.format("Predicted species:".ljust(28), species))
+    print('{}{}'.format("Predicted species:".ljust(26), species))
     gene_id_map = geneids.get_ensembl_mappings(species)
     identifiers = set.union(set(cormat.index), set(cormat.columns))
     symbol_overlap = identifiers.intersection(set(gene_id_map.iloc[:,0]))
     entrezid_overlap = identifiers.intersection(set(gene_id_map.iloc[:,1]))
-    print('{}{}'.format("Total unique identifiers:".ljust(28), len(identifiers)))
-    print('{}{}'.format("Gene Symbol overlap:".ljust(28), len(set(symbol_overlap))/len(identifiers)))
-    print('{}{}'.format("Ensembl ID overlap:".ljust(28), len(set(entrezid_overlap))/len(identifiers)))
+    print('{}{}'.format("Total unique identifiers:".ljust(26), len(identifiers)))
+    print('{}{}'.format("Gene Symbol overlap:".ljust(26), len(set(symbol_overlap))/len(identifiers)))
+    print('{}{}'.format("Ensembl ID overlap:".ljust(26), len(set(entrezid_overlap))/len(identifiers)))
 
 def get_data_path() -> str:
     path = os.path.join(
@@ -126,7 +121,7 @@ def compare_known_cor(cormat):
     flat_new = cormat.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
     flat_old = old_cor.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
     cor_match = np.corrcoef(flat_new, flat_old)[1,1]
-    print('{}{}'.format("Correlation similarity to known:".ljust(28), cor_match))
+    print('{}{}'.format("Correlation similarity:".ljust(26), cor_match))
 
 def benchmark(file: str, identifiers=True, correlation=True, prediction=True, format=True):
     # run benchmark
@@ -147,6 +142,6 @@ def benchmark(file: str, identifiers=True, correlation=True, prediction=True, fo
         compare_known_cor(cormat)
     
     if prediction:
-        print("------- Function prediction -------")
-
+        print("------- Gene function prediction -------")
+        prediction.prediction(cormat)
 
