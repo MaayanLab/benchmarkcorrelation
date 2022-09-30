@@ -1,9 +1,8 @@
-import benchmarkcorrelation.enrichr
+import enrichr
 from sklearn.metrics import roc_auc_score
 import tqdm
 import numpy as np
 
-import benchmarkcorrelation.enrichr
 
 def prediction(cormat):
     kegg = enrichr.get_library("KEGG_2021_Human")
