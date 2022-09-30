@@ -80,7 +80,6 @@ def bench_stats(cormat):
     #np.fill_diagonal(temp, None)
     print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
     print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
-    np.nanmean(cormat.iloc[0:10000, 0:10000].astype("float32"))
 
 def gene_ids(cormat):
     upper = 0
@@ -118,7 +117,7 @@ def compare_known_cor(cormat):
     inter_column = cormat.index.intersection(old_cor.columns)
     flat_new = cormat.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
     flat_old = old_cor.loc[inter_row, inter_column].replace(1, 1).to_numpy().flatten()
-    cor_match = np.corrcoef(flat_new, flat_old)[1,1]
+    cor_match = np.corrcoef(flat_new, flat_old)[1,0]
     print('{}{}'.format("Correlation similarity:".ljust(26), cor_match))
 
 def benchmark(file: str, identifiers=True, correlation=True, pred=True, format=True):
