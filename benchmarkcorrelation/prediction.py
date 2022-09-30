@@ -32,5 +32,6 @@ def predict(cormat, library):
     aucs = []
     for k in tqdm.tqdm(library.keys(), leave=False):
         geneset = list(library[k])
-        aucs.append(roc_auc_score([x in library[k] for x in all_genes], cormatna.loc[:, geneset].mean(axis=1).replace(np.nan, 0)))
+        if len(geneset) > 2:
+            aucs.append(roc_auc_score([x in library[k] for x in all_genes], cormatna.loc[:, geneset].mean(axis=1).replace(np.nan, 0)))
     return np.mean(aucs)
