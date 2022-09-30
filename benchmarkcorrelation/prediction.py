@@ -1,4 +1,4 @@
-import enrichr
+from benchmarkcorrelation import enrichr
 from sklearn.metrics import roc_auc_score
 import tqdm
 import numpy as np
