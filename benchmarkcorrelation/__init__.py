@@ -78,8 +78,8 @@ def bench_stats(cormat):
 
     #temp = np.array(cormat, dtype = np.float32)
     #np.fill_diagonal(temp, None)
-    print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
-    print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(cormat.iloc[0:min(cormat.shape[0],10000), 0:min(cormat.shape[0],10000)].astype("float32"))))
+    print('{}{}'.format("Correlation mean:".ljust(26), np.nanmean(cormat.iloc[0:min(cormat.shape[0],20000), 0:min(cormat.shape[0],20000)].astype("float32"))))
+    print('{}{}'.format("Correlation STD:".ljust(26), np.nanstd(cormat.iloc[0:min(cormat.shape[0],20000), 0:min(cormat.shape[0],20000)].astype("float32"))))
 
 def gene_ids(cormat):
     upper = 0
