@@ -7,10 +7,10 @@ def get_ensembl_mappings(species):
     server = biomart.BiomartServer('http://uswest.ensembl.org/biomart')
     if species == "mouse":
         mart = server.datasets['mmusculus_gene_ensembl']
-        attributes = ['ensembl_transcript_id', 'mgi_symbol', 'ensembl_gene_id', 'gene_biotype']
+        attributes = ['mgi_symbol', 'ensembl_gene_id']
     else:
         mart = server.datasets['hsapiens_gene_ensembl']
-        attributes = ['ensembl_transcript_id', 'hgnc_symbol', 'ensembl_gene_id', 'gene_biotype']                                                     
+        attributes = ['hgnc_symbol', 'ensembl_gene_id']                                                     
     # Get the mapping between the attributes                                    
     response = mart.search({'attributes': attributes})
     data = response.raw.data.decode('ascii')
